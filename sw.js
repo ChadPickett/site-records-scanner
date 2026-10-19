@@ -1,5 +1,5 @@
 // Caches the app shell so it opens instantly. Google sign-in and Drive calls always go to the network.
-const CACHE = "srs-v1";
+const CACHE = "srs-v2";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png",
   "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"];
 
