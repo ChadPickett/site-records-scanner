@@ -37,7 +37,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:2rem;line-height:1;mar
 h1 span{color:var(--accent)}
 h2{font-family:var(--f-display);font-weight:600;font-size:1.2rem;text-transform:uppercase;letter-spacing:.06em;margin:0}
 .chip{font-family:var(--f-mono);font-size:.72rem;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--muted);white-space:nowrap}
-.chip.ok{color:var(--ok);border-color:currentColor}.chip.warn{color:var(--warn);border-color:currentColor}.chip.err{color:var(--err);border-color:currentColor}
+.chip.ok{color:var(--ok);border-color:currentColor}.chip.warn{color:var(--warn);border-color:currentColor}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px}
 .card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -66,7 +66,7 @@ button.small{min-height:36px;padding:6px 11px;font-size:.85rem}
 .pg .n{position:absolute;left:5px;top:5px;font-family:var(--f-mono);font-size:.7rem;background:var(--surface);color:var(--ink);border-radius:4px;padding:1px 5px}
 .pg .t{position:absolute;right:5px;bottom:5px;width:9px;height:9px;border-radius:50%;background:var(--line)}
 .pg .t.done{background:var(--ok)}.pg .t.run{background:var(--warn)}.pg .t.fail{background:var(--err)}
-.pg.busy::after{content:"Processing";position:absolute;inset:0;display:grid;place-items:center;font-size:.75rem;color:var(--muted);background:var(--sunk)}
+.pg .w{position:absolute;inset:auto 0 0 0;font-size:.68rem;font-weight:600;text-align:center;padding:3px;background:var(--surface);color:var(--muted)}
 .toggle{display:flex;flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-weight:500;font-size:.92rem;color:var(--ink)}
 .toggle input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--accent)}
 .toggle small{display:block;color:var(--muted);font-weight:400;font-size:.82rem}
@@ -94,17 +94,48 @@ summary{cursor:pointer;font-weight:600;font-size:.9rem}
 .bar-in .count{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);flex:1;min-width:0}
 .bar-in .count b{color:var(--ink);font-size:1.05rem}
 .bar-in button.primary{flex:0 0 auto;padding-inline:20px}
+
+/* camera */
+.cam{position:fixed;inset:0;z-index:30;background:#000;color:#fff;display:flex;flex-direction:column}
+.cam-top,.cam-bot{display:flex;align-items:center;gap:10px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.cam-top{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px;justify-content:space-between}
+.cam-bot{padding-top:14px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));justify-content:space-between}
+.cam button{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
+.cam button[aria-pressed="true"]{background:#fff;color:#000}
+.cam .seg{border-color:rgba(255,255,255,.3)}
+.cam-view{flex:1;min-height:0;position:relative;display:grid;place-items:center;overflow:hidden}
+.cam-view video{width:100%;height:100%;object-fit:contain;background:#000}
+.cam-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.cam-flash.go{animation:flash .25s ease-out}
+@keyframes flash{from{opacity:.85}to{opacity:0}}
+.cam-hint{position:absolute;left:12px;right:12px;bottom:12px;text-align:center;font-size:.85rem;color:rgba(255,255,255,.85);text-shadow:0 1px 3px #000}
+.shutter{width:76px;height:76px;border-radius:50%;padding:0;background:transparent!important;border:4px solid #fff!important;display:grid;place-items:center}
+.shutter::after{content:"";width:60px;height:60px;border-radius:50%;background:#fff;transition:transform .1s}
+.shutter:active::after{transform:scale(.9)}
+.shutter:disabled{opacity:.4}
+.cam-thumb{width:58px;height:58px;border-radius:8px;overflow:hidden;position:relative;padding:0;background:rgba(255,255,255,.1)!important}
+.cam-thumb img{width:100%;height:100%;object-fit:cover}
+.cam-thumb b{position:absolute;right:-1px;top:-1px;background:var(--accent);color:var(--accent-ink);font-family:var(--f-mono);font-size:.72rem;min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;padding:0 5px}
+.cam-done{min-width:58px}
+
+/* editor */
 .ed{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;
   padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
-.ed-top,.ed-tools{display:flex;gap:8px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.ed-top,.ed-tools,.ed-nav{display:flex;gap:8px;align-items:center;padding:10px 16px;flex-wrap:wrap}
 .ed-top{justify-content:space-between;border-bottom:1px solid var(--line);background:var(--surface)}
-.ed-stage{flex:1;min-height:0;display:grid;place-items:center;padding:12px;overflow:hidden}
+.ed-stage{flex:1;min-height:0;display:grid;place-items:center;padding:12px;overflow:hidden;position:relative}
 .ed-stage canvas{touch-action:none;max-width:100%;border-radius:4px}
 .ed-stage img{max-width:100%;max-height:100%;object-fit:contain;background:#fff}
+.ed-load{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);font-weight:600;background:var(--bg)}
+.spin{width:38px;height:38px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .ed-tools{border-top:1px solid var(--line);background:var(--surface);justify-content:center}
+.ed-nav{background:var(--surface);border-top:1px solid var(--line);justify-content:space-between}
+.ed-nav .primary{flex:1 1 auto;max-width:260px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg button{border:0;border-radius:0;min-height:38px;padding:6px 12px;font-size:.85rem;background:transparent}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}.cam-flash.go{animation:none}}
 @media (prefers-reduced-motion:no-preference){button{transition:background .15s,transform .1s}button:active{transform:translateY(1px)}}
 </style>
 </head>
@@ -147,16 +178,17 @@ summary{cursor:pointer;font-weight:600;font-size:.9rem}
     </div>
     <div id="pagesEmpty" class="empty">
       <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="14" y="8" width="36" height="48" rx="3" stroke="currentColor" stroke-width="2"/><path d="M21 20h22M21 27h22M21 34h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 16V6h10M58 16V6H48M6 48v10h10M58 48v10H48" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <div><b style="color:var(--ink)">No pages yet.</b><br>Shoot each page flat, on a darker surface, filling the frame. Tap a page afterward to fix the crop, rotate, or change the look.</div>
+      <div><b style="color:var(--ink)">No pages yet.</b><br>Lay each page flat on a darker surface and fill the frame. Use <b>One at a time</b> to crop after each shot, or <b>Continuous</b> to shoot a whole stack and crop at the end.</div>
     </div>
     <div class="pages" id="pages" hidden></div>
     <div class="row">
-      <button class="primary capture" type="button">
+      <button class="primary" type="button" id="scanBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" stroke="currentColor" stroke-width="2"/></svg>
-        Scan page<input type="file" id="camIn" accept="image/*" capture="environment" aria-label="Scan page with camera">
+        Scan pages
       </button>
       <button class="capture" type="button">Add from photos<input type="file" id="libIn" accept="image/*" multiple aria-label="Add pages from photo library"></button>
     </div>
+    <input type="file" id="camIn" accept="image/*" capture="environment" hidden>
     <label for="quality">Scan resolution
       <select id="quality">
         <option value="2400">Standard (about 200 dpi, smaller files)</option>
@@ -192,29 +224,57 @@ summary{cursor:pointer;font-weight:600;font-size:.9rem}
   <button type="button" class="primary" id="saveBtn" disabled>Save to Drive</button>
 </div></div>
 
+<!-- live camera -->
+<div class="cam" id="cam" hidden role="dialog" aria-modal="true" aria-label="Camera">
+  <div class="cam-top">
+    <button type="button" class="small" id="camClose" aria-label="Close camera">✕</button>
+    <div class="seg" role="group" aria-label="Scan mode">
+      <button type="button" class="small" id="mSingle">One at a time</button>
+      <button type="button" class="small" id="mCont">Continuous</button>
+    </div>
+    <button type="button" class="small" id="torchBtn" hidden aria-pressed="false">Light</button>
+  </div>
+  <div class="cam-view">
+    <video id="video" playsinline muted autoplay></video>
+    <div class="cam-flash" id="camFlash"></div>
+    <div class="cam-hint" id="camHint"></div>
+  </div>
+  <div class="cam-bot">
+    <button type="button" class="cam-thumb" id="camThumb" aria-label="Review pages"><img id="camThumbImg" alt="" hidden><b id="camCount" hidden>0</b></button>
+    <button type="button" class="shutter" id="shutter" aria-label="Take photo"></button>
+    <button type="button" class="small cam-done" id="camDone">Done</button>
+  </div>
+</div>
+
+<!-- page editor -->
 <div class="ed" id="editor" hidden role="dialog" aria-modal="true" aria-labelledby="edTitle">
   <div class="ed-top">
     <strong id="edTitle" style="font-family:var(--f-display);text-transform:uppercase;letter-spacing:.06em;font-size:1.1rem">Page 1</strong>
     <div class="seg" role="group" aria-label="View">
       <button type="button" id="vCrop" aria-pressed="true">Crop</button>
-      <button type="button" id="vResult" aria-pressed="false">Result</button>
+      <button type="button" id="vResult" aria-pressed="false">Preview</button>
     </div>
-    <button type="button" class="primary small" id="edDone">Done</button>
   </div>
-  <div class="ed-stage" id="edStage"><canvas id="edCanvas"></canvas><img id="edImg" alt="Processed page" hidden></div>
+  <div class="ed-stage" id="edStage">
+    <canvas id="edCanvas"></canvas><img id="edImg" alt="Processed page" hidden>
+    <div class="ed-load" id="edLoad" hidden><div class="spin"></div><span id="edLoadTxt">Processing page…</span></div>
+  </div>
   <div class="ed-tools">
+    <button type="button" class="small" id="edAuto">Auto crop</button>
+    <button type="button" class="small" id="edFull">Full frame</button>
+    <button type="button" class="small" id="edRot">Rotate</button>
     <div class="seg" role="group" aria-label="Look" id="filterSeg">
       <button type="button" data-f="doc">Document</button>
       <button type="button" data-f="gray">Gray</button>
       <button type="button" data-f="color">Color</button>
       <button type="button" data-f="orig">Original</button>
     </div>
-    <button type="button" class="small" id="edRot">Rotate</button>
-    <button type="button" class="small" id="edAuto">Find edges</button>
-    <button type="button" class="small" id="edFull">Full frame</button>
-    <button type="button" class="small" id="edLeft" aria-label="Move page earlier">←</button>
-    <button type="button" class="small" id="edRight" aria-label="Move page later">→</button>
     <button type="button" class="small" id="edDel" style="color:var(--err)">Delete</button>
+  </div>
+  <div class="ed-nav">
+    <button type="button" class="small" id="edBack">Back</button>
+    <button type="button" class="small ghost" id="edAlt" hidden>Finish</button>
+    <button type="button" class="primary" id="edNext">Done</button>
   </div>
 </div>
 
@@ -382,6 +442,7 @@ async function loadBitmap(blob){
 }
 async function scaled(blob,max){const b=await loadBitmap(blob);const s=Math.min(1,max/Math.max(b.width,b.height));
   const c=mk(b.width*s,b.height*s);ctx(c).drawImage(b,0,0,c.width,c.height);b.close&&b.close();return c}
+function thumbOf(c){const ts=260/Math.max(c.width,c.height),t=mk(c.width*ts,c.height*ts);ctx(t).drawImage(c,0,0,t.width,t.height);return t.toDataURL("image/jpeg",.7)}
 function full(w,h){return [{x:0,y:0},{x:w,y:0},{x:w,y:h},{x:0,y:h}]}
 function isFull(c,w,h){const f=full(w,h);return c.every((p,i)=>Math.abs(p.x-f[i].x)<2&&Math.abs(p.y-f[i].y)<2)}
 
@@ -417,7 +478,7 @@ function solve(A,b){const n=b.length;for(let i=0;i<n;i++){let m=i;for(let r=i+1;
 function homography(from,to){const A=[],b=[];for(let i=0;i<4;i++){const {x,y}=from[i],u=to[i].x,v=to[i].y;
   A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v)}return [...solve(A,b),1]}
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-function warp(src,corners){
+async function warp(src,corners){
   const w=src.width,h=src.height;
   if(isFull(corners,w,h)){const c=mk(w,h);ctx(c).drawImage(src,0,0);return c}
   const [a,b,c2,d]=corners;
@@ -426,12 +487,15 @@ function warp(src,corners){
   const H=homography(full(ow,oh),corners);
   const sc=mk(w,h),sx=ctx(sc);sx.drawImage(src,0,0);const sd=sx.getImageData(0,0,w,h).data;
   const out=mk(ow,oh),ox=ctx(out),od=ox.createImageData(ow,oh),o=od.data;
-  for(let y=0;y<oh;y++){for(let x=0;x<ow;x++){
-    const Z=H[6]*x+H[7]*y+1,X=(H[0]*x+H[1]*y+H[2])/Z,Y=(H[3]*x+H[4]*y+H[5])/Z;
-    const x0=Math.min(w-2,Math.max(0,X|0)),y0=Math.min(h-2,Math.max(0,Y|0)),fx=Math.min(1,Math.max(0,X-x0)),fy=Math.min(1,Math.max(0,Y-y0));
-    const i00=(y0*w+x0)*4,i10=i00+4,i01=i00+w*4,i11=i01+4,j=(y*ow+x)*4;
-    for(let k=0;k<3;k++){const t=sd[i00+k]*(1-fx)+sd[i10+k]*fx,bb=sd[i01+k]*(1-fx)+sd[i11+k]*fx;o[j+k]=t*(1-fy)+bb*fy}
-    o[j+3]=255}}
+  for(let y=0;y<oh;y++){
+    for(let x=0;x<ow;x++){
+      const Z=H[6]*x+H[7]*y+1,X=(H[0]*x+H[1]*y+H[2])/Z,Y=(H[3]*x+H[4]*y+H[5])/Z;
+      const x0=Math.min(w-2,Math.max(0,X|0)),y0=Math.min(h-2,Math.max(0,Y|0)),fx=Math.min(1,Math.max(0,X-x0)),fy=Math.min(1,Math.max(0,Y-y0));
+      const i00=(y0*w+x0)*4,i10=i00+4,i01=i00+w*4,i11=i01+4,j=(y*ow+x)*4;
+      for(let k=0;k<3;k++){const t=sd[i00+k]*(1-fx)+sd[i10+k]*fx,bb=sd[i01+k]*(1-fx)+sd[i11+k]*fx;o[j+k]=t*(1-fy)+bb*fy}
+      o[j+3]=255}
+    if(y%300===299)await tick();   // keep the camera and buttons responsive while warping
+  }
   ox.putImageData(od,0,0);return out;
 }
 function rotate(c,deg){if(!deg)return c;const sw=deg%180!==0;const o=mk(sw?c.height:c.width,sw?c.width:c.height),x=ctx(o);
@@ -462,63 +526,190 @@ function applyFilter(c,f){
   }
   x.putImageData(id,0,0);return c;
 }
-async function render(p,srcOpt){
-  p.busy=true;drawPages();await tick();
-  const src=srcOpt||await loadBitmap(p.srcBlob);
-  let c=warp(src,p.corners);await tick();
+
+/* ---------- background work queue ----------
+   Preparing a shot (decode, shrink, find edges) runs before finishing pages (warp, clean up),
+   so the crop screen shows up fast even while earlier pages are still being finished. */
+const jobs=[];let running=false;
+function job(pri,fn){return new Promise(res=>{jobs.push({pri,fn,res});jobs.sort((a,b)=>a.pri-b.pri);pump()})}
+async function pump(){
+  if(running)return;running=true;
+  while(jobs.length){const j=jobs.shift();try{j.res(await j.fn())}catch(e){console.error(e);j.res(null)}drawPages();await tick()}
+  running=false;drawPages();
+}
+const working=()=>running||jobs.length>0;
+const drain=()=>job(9,()=>{});
+
+function newPage(){
+  const p={id:++seq,corners:null,rot:0,filter:isPhoto()?"orig":"doc",tx:"none",text:"",state:"prep",thumb:null};
+  S.pages.push(p);return p;
+}
+function addShot(blob){
+  const p=newPage();
+  p.ready=job(0,()=>prepare(p,blob));
+  p.ready.then(ok=>{if(ok&&ED.p!==p)queueRender(p)});
+  drawPages();return p;
+}
+async function prepare(p,blob){
+  try{
+    const bmp=await loadBitmap(blob);
+    const maxEdge=+$("quality").value;
+    const s=Math.min(1,maxEdge/Math.max(bmp.width,bmp.height));
+    const c=mk(bmp.width*s,bmp.height*s);ctx(c).drawImage(bmp,0,0,c.width,c.height);bmp.close&&bmp.close();
+    p.corners=($("autoEdge").checked&&!isPhoto()&&detectCorners(c))||full(c.width,c.height);
+    p.src=ED.p===p?c:null;p.thumb=thumbOf(c);
+    p.srcBlob=await toBlob(c,"image/jpeg",.92);
+    p.state="ready";return true;
+  }catch(e){
+    console.error(e);S.pages.splice(S.pages.indexOf(p),1);
+    showMsg("Couldn't read one of the photos. Take it again.","err");return false;
+  }
+}
+function queueRender(p){
+  if(p.renderQueued||!S.pages.includes(p))return;
+  p.renderQueued=true;p.state="rendering";drawPages();
+  job(1,async()=>{
+    p.renderQueued=false;
+    if(!S.pages.includes(p))return;
+    if(ED.p===p){p.state="ready";return}   // being edited; finished when the editor moves on
+    await render(p);
+  });
+}
+async function render(p){
+  const src=p.src||await loadBitmap(p.srcBlob);
+  let c=await warp(src,p.corners);await tick();
   c=rotate(c,p.rot);c=applyFilter(c,p.filter);
   p.outW=c.width;p.outH=c.height;
   p.outBlob=await toBlob(c,"image/jpeg",.84);
-  const ts=260/Math.max(c.width,c.height),t=mk(c.width*ts,c.height*ts);ctx(t).drawImage(c,0,0,t.width,t.height);
-  p.thumb=t.toDataURL("image/jpeg",.7);
-  if(!srcOpt&&src.close)src.close();
-  p.busy=false;if(p.tx==="done")p.tx="stale";
-  drawPages();
+  p.thumb=thumbOf(c);
+  if(!p.src&&src.close)src.close();
+  if(ED.p!==p)p.src=null;      // free memory once the page is finished
+  if(p.tx==="done")p.tx="stale";
+  p.state="done";
 }
-async function addFiles(files){
-  const maxEdge=+$("quality").value,auto=$("autoEdge").checked;
-  for(const f of files){
-    const p={id:++seq,corners:null,rot:0,filter:isPhoto()?"orig":"doc",tx:"none",text:"",busy:true};
-    S.pages.push(p);drawPages();
-    try{
-      const bmp=await loadBitmap(f);
-      const s=Math.min(1,maxEdge/Math.max(bmp.width,bmp.height));
-      const c=mk(bmp.width*s,bmp.height*s);ctx(c).drawImage(bmp,0,0,c.width,c.height);bmp.close&&bmp.close();
-      p.corners=(auto&&!isPhoto()&&detectCorners(c))||full(c.width,c.height);
-      p.srcBlob=await toBlob(c,"image/jpeg",.92);
-      await render(p,c);
-    }catch{S.pages.splice(S.pages.indexOf(p),1);drawPages();showMsg("Couldn't read that image. Try taking the photo again.","err")}
-  }
-}
-$("camIn").onchange=e=>{addFiles([...e.target.files]);e.target.value=""};
-$("libIn").onchange=e=>{addFiles([...e.target.files]);e.target.value=""};
 
+/* ---------- live camera ---------- */
+const CAM={stream:null,track:null,ic:null,mode:store.get("mode","single"),session:[],torch:false,busy:false};
+function setMode(m){CAM.mode=m;store.set("mode",m);
+  $("mSingle").setAttribute("aria-pressed",m==="single");$("mCont").setAttribute("aria-pressed",m==="cont");
+  $("camHint").textContent=m==="single"?"Take a photo, then crop it right away.":"Keep shooting. You'll crop every page when you tap Done.";
+}
+$("mSingle").onclick=()=>setMode("single");$("mCont").onclick=()=>setMode("cont");
+$("scanBtn").onclick=()=>openCamera(false);
+async function openCamera(keep){
+  if(!navigator.mediaDevices?.getUserMedia){$("camIn").click();return}
+  if(keep!==true)CAM.session=[];camThumb();setMode(CAM.mode);
+  $("cam").hidden=false;document.body.style.overflow="hidden";
+  try{
+    CAM.stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:"environment"},width:{ideal:4096},height:{ideal:3072}}});
+  }catch(e){
+    closeCamera();
+    showMsg(e?.name==="NotAllowedError"?"Camera access was blocked. Allow the camera for this app in your phone's settings, or use Add from photos.":"The camera couldn't start. Use Add from photos instead.","err");
+    return;
+  }
+  CAM.track=CAM.stream.getVideoTracks()[0];
+  $("video").srcObject=CAM.stream;$("video").play().catch(()=>{});
+  try{CAM.ic=("ImageCapture" in window)?new ImageCapture(CAM.track):null}catch{CAM.ic=null}
+  try{const caps=CAM.track.getCapabilities?.()||{};
+    if(caps.focusMode?.includes("continuous"))CAM.track.applyConstraints({advanced:[{focusMode:"continuous"}]}).catch(()=>{});
+    $("torchBtn").hidden=!caps.torch;}catch{$("torchBtn").hidden=true}
+}
+function stopStream(){CAM.stream?.getTracks().forEach(t=>t.stop());CAM.stream=null;CAM.track=null;CAM.ic=null;CAM.torch=false;$("torchBtn").setAttribute("aria-pressed","false")}
+function closeCamera(){stopStream();$("cam").hidden=true;if($("editor").hidden)document.body.style.overflow="";drawPages()}
+$("camClose").onclick=closeCamera;
+$("torchBtn").onclick=()=>{CAM.torch=!CAM.torch;CAM.track?.applyConstraints({advanced:[{torch:CAM.torch}]}).catch(()=>{});$("torchBtn").setAttribute("aria-pressed",CAM.torch)};
+async function grab(){
+  const v=$("video");
+  if(CAM.ic&&!CAM.torch){try{const b=await CAM.ic.takePhoto();if(b&&b.size)return b}catch{}}
+  if(!v.videoWidth)throw new Error("no frame");
+  const c=mk(v.videoWidth,v.videoHeight);ctx(c).drawImage(v,0,0);return toBlob(c,"image/jpeg",.95);
+}
+$("shutter").onclick=async()=>{
+  if(CAM.busy)return;CAM.busy=true;$("shutter").disabled=true;
+  const f=$("camFlash");f.classList.remove("go");void f.offsetWidth;f.classList.add("go");
+  try{
+    const blob=await grab();
+    const p=addShot(blob);CAM.session.push(p);camThumb();
+    if(CAM.mode==="single")openEditor(p,"single");
+  }catch{showMsg("The camera didn't take that photo. Try again.","err")}
+  finally{CAM.busy=false;$("shutter").disabled=false}
+};
+function camThumb(){
+  const live=CAM.session.filter(p=>S.pages.includes(p));
+  const last=live[live.length-1];
+  $("camCount").hidden=!live.length;$("camCount").textContent=live.length;
+  if(last){const show=()=>{if(last.thumb){$("camThumbImg").src=last.thumb;$("camThumbImg").hidden=false}};show();last.ready?.then(()=>{show()})}
+  else $("camThumbImg").hidden=true;
+}
+$("camThumb").onclick=()=>{const live=CAM.session.filter(p=>S.pages.includes(p));if(live.length)openEditor(live[0],"review",live)};
+$("camDone").onclick=()=>{
+  const live=CAM.session.filter(p=>S.pages.includes(p));
+  if(CAM.mode==="cont"&&live.length){stopStream();openEditor(live[0],"review",live,true)}
+  else closeCamera();
+};
+/* Fallback when the browser has no live camera: the phone's own camera app, one shot at a time. */
+$("camIn").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f){const p=addShot(f);openEditor(p,"edit")}};
+$("libIn").onchange=e=>{[...e.target.files].forEach(f=>addShot(f));e.target.value=""};
+
+/* ---------- page list ---------- */
 function drawPages(){
   const el=$("pages"),n=S.pages.length;
   $("pagesEmpty").hidden=!!n;el.hidden=!n;
-  el.innerHTML=S.pages.map((p,i)=>`<button type="button" class="pg${p.busy?" busy":""}" data-id="${p.id}" aria-label="Edit page ${i+1}">
-    ${p.thumb?`<img src="${p.thumb}" alt="">`:""}<span class="n">${String(i+1).padStart(2,"0")}</span><span class="t ${p.tx==="done"?"done":p.tx==="run"?"run":p.tx==="fail"?"fail":""}"></span></button>`).join("");
-  el.querySelectorAll(".pg").forEach(b=>b.onclick=()=>openEditor(+b.dataset.id));
+  el.innerHTML=S.pages.map((p,i)=>`<button type="button" class="pg" data-id="${p.id}" aria-label="Edit page ${i+1}">
+    ${p.thumb?`<img src="${p.thumb}" alt="">`:""}<span class="n">${String(i+1).padStart(2,"0")}</span>
+    ${p.state!=="done"?`<span class="w">${p.state==="prep"?"Loading…":"Finishing…"}</span>`:`<span class="t ${p.tx==="done"?"done":p.tx==="run"?"run":p.tx==="fail"?"fail":""}"></span>`}</button>`).join("");
+  el.querySelectorAll(".pg").forEach(b=>b.onclick=()=>{const p=S.pages.find(x=>x.id===+b.dataset.id);if(p)openEditor(p,"edit")});
   $("pageChip").textContent=`${n} page${n===1?"":"s"}`;
-  $("barCount").innerHTML=`<b>${n}</b> page${n===1?"":"s"} ready`;
-  $("saveBtn").disabled=!n||S.busy||S.pages.some(p=>p.busy);
+  const pend=S.pages.filter(p=>p.state!=="done").length;
+  $("barCount").innerHTML=pend?`<b>${n}</b> pages · ${pend} finishing`:`<b>${n}</b> page${n===1?"":"s"} ready`;
+  $("saveBtn").disabled=!n||S.busy;
   updateTxChip();drawTx();
 }
 
-/* ---------- editor ---------- */
-const ED={p:null,bmp:null,scale:1,drag:-1,view:"crop"};
-async function openEditor(id){
-  const p=S.pages.find(x=>x.id===id);if(!p||p.busy||S.busy)return;
-  ED.p=p;ED.view="crop";$("editor").hidden=false;document.body.style.overflow="hidden";
-  ED.bmp=await loadBitmap(p.srcBlob);syncEditor();
+/* ---------- editor ----------
+   ctx "single": opened right after a shot (Back = retake, Next = keep shooting, Finish = stop)
+   ctx "review": stepping through a batch (Back / Next, Finish on the last page)
+   ctx "edit":   one page from the list (Done) */
+const ED={p:null,bmp:null,scale:1,drag:-1,view:"crop",ctx:"edit",list:null,fromCam:false,token:0};
+async function openEditor(p,ctxName,list,fromContDone){
+  ED.ctx=ctxName;ED.list=list||null;ED.fromCam=!$("cam").hidden||!!fromContDone;
+  $("editor").hidden=false;document.body.style.overflow="hidden";
+  await showPage(p);
+}
+async function showPage(p){
+  const my=++ED.token;
+  ED.p=p;ED.view="crop";ED.dirty=false;
+  if(ED.bmp&&ED.bmp.close&&ED.bmp!==p.src)ED.bmp.close();ED.bmp=null;
+  setNav();
+  $("edLoad").hidden=false;$("edCanvas").hidden=true;$("edImg").hidden=true;
+  const pos=listPos();
+  $("edLoadTxt").textContent=pos?`Processing page ${pos[0]} of ${pos[1]}…`:"Processing page…";
+  const ok=await p.ready;
+  if(my!==ED.token)return;
+  if(!ok||!S.pages.includes(p)){
+    if(ED.ctx==="review")return advance(1,(ED.list||[]).indexOf(p));
+    if(ED.ctx==="single")return backToCamera();
+    return closeEditor();
+  }
+  ED.bmp=p.src||await loadBitmap(p.srcBlob);
+  if(my!==ED.token)return;
+  $("edLoad").hidden=true;syncEditor();
+}
+function listPos(){if(!ED.list)return null;const l=ED.list.filter(x=>S.pages.includes(x));const i=l.indexOf(ED.p);return i<0?null:[i+1,l.length]}
+function setNav(){
+  const pos=listPos(), i=S.pages.indexOf(ED.p);
+  $("edTitle").textContent=pos?`Page ${pos[0]} of ${pos[1]}`:`Page ${i+1} of ${S.pages.length}`;
+  const back=$("edBack"),next=$("edNext"),alt=$("edAlt");
+  if(ED.ctx==="single"){back.textContent="Retake";back.disabled=false;next.textContent="Next page";alt.hidden=false;alt.textContent="Finish"}
+  else if(ED.ctx==="review"){const last=pos&&pos[0]===pos[1];back.textContent="Back";back.disabled=!pos||pos[0]===1;next.textContent=last?"Finish":"Next";alt.hidden=true}
+  else{back.textContent="Close";back.disabled=false;next.textContent="Done";alt.hidden=true}
+  document.querySelectorAll("#filterSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===ED.p.filter));
 }
 function syncEditor(){
-  const p=ED.p,i=S.pages.indexOf(p);
-  $("edTitle").textContent=`Page ${i+1} of ${S.pages.length}`;
+  setNav();
   $("vCrop").setAttribute("aria-pressed",ED.view==="crop");$("vResult").setAttribute("aria-pressed",ED.view==="result");
-  document.querySelectorAll("#filterSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===p.filter));
   $("edCanvas").hidden=ED.view!=="crop";$("edImg").hidden=ED.view!=="result";
-  if(ED.view==="crop")drawCrop();else{if(ED.url)URL.revokeObjectURL(ED.url);ED.url=URL.createObjectURL(p.outBlob);$("edImg").src=ED.url}
+  if(ED.view==="crop")drawCrop();
 }
 function drawCrop(){
   const st=$("edStage"),cv=$("edCanvas"),b=ED.bmp,p=ED.p;if(!b)return;
@@ -532,30 +723,74 @@ function drawCrop(){
   c.forEach(q=>{x.beginPath();x.arc(q.x,q.y,13/s,0,7);x.fillStyle="rgba(255,255,255,.9)";x.fill();x.lineWidth=3/s;x.stroke()});
 }
 function ptr(e){const r=$("edCanvas").getBoundingClientRect();return {x:(e.clientX-r.left)/ED.scale,y:(e.clientY-r.top)/ED.scale}}
-$("edCanvas").addEventListener("pointerdown",e=>{const q=ptr(e);let bi=-1,bd=44/ED.scale;
+$("edCanvas").addEventListener("pointerdown",e=>{if(!ED.bmp)return;const q=ptr(e);let bi=-1,bd=44/ED.scale;
   ED.p.corners.forEach((c,i)=>{const d=dist(c,q);if(d<bd){bd=d;bi=i}});if(bi<0)return;ED.drag=bi;e.target.setPointerCapture(e.pointerId);e.preventDefault()});
 $("edCanvas").addEventListener("pointermove",e=>{if(ED.drag<0)return;const q=ptr(e);
   ED.p.corners[ED.drag]={x:Math.max(0,Math.min(ED.bmp.width,q.x)),y:Math.max(0,Math.min(ED.bmp.height,q.y))};ED.dirty=true;drawCrop()});
 ["pointerup","pointercancel"].forEach(t=>$("edCanvas").addEventListener(t,()=>{ED.drag=-1}));
 window.addEventListener("resize",()=>{if(!$("editor").hidden&&ED.view==="crop")drawCrop()});
-async function rerender(){ED.dirty=false;await render(ED.p,ED.bmp);if(!$("editor").hidden)syncEditor()}
-$("vCrop").onclick=()=>{ED.view="crop";syncEditor()};
-$("vResult").onclick=async()=>{ED.view="result";if(ED.dirty)await rerender();else syncEditor()};
-document.querySelectorAll("#filterSeg button").forEach(b=>b.onclick=async()=>{ED.p.filter=b.dataset.f;ED.view="result";await rerender()});
-$("edRot").onclick=async()=>{ED.p.rot=(ED.p.rot+90)%360;ED.view="result";await rerender()};
-$("edAuto").onclick=()=>{const c=mk(ED.bmp.width,ED.bmp.height);ctx(c).drawImage(ED.bmp,0,0);const r=detectCorners(c);
-  if(r){ED.p.corners=r;ED.dirty=true;ED.view="crop";syncEditor()}else{closeEditor();showMsg("Couldn't find the page edges on that one. Open it again and drag the corners by hand.","warn")}};
-$("edFull").onclick=()=>{ED.p.corners=full(ED.bmp.width,ED.bmp.height);ED.dirty=true;ED.view="crop";syncEditor()};
-function move(dlt){const i=S.pages.indexOf(ED.p),j=i+dlt;if(j<0||j>=S.pages.length)return;[S.pages[i],S.pages[j]]=[S.pages[j],S.pages[i]];drawPages();syncEditor()}
-$("edLeft").onclick=()=>move(-1);$("edRight").onclick=()=>move(1);
+
+/* Preview renders this one page now, ahead of anything queued. */
+async function preview(){
+  if(!ED.bmp)return;
+  const p=ED.p,my=ED.token;ED.view="result";
+  $("edLoad").hidden=false;$("edLoadTxt").textContent="Building preview…";$("edCanvas").hidden=true;$("edImg").hidden=true;
+  let c=await warp(ED.bmp,p.corners);c=rotate(c,p.rot);c=applyFilter(c,p.filter);
+  const b=await toBlob(c,"image/jpeg",.8);
+  if(my!==ED.token)return;
+  if(ED.url)URL.revokeObjectURL(ED.url);ED.url=URL.createObjectURL(b);$("edImg").src=ED.url;
+  $("edLoad").hidden=true;syncEditor();
+}
+$("vCrop").onclick=()=>{if(!ED.bmp)return;ED.view="crop";syncEditor()};
+$("vResult").onclick=preview;
+document.querySelectorAll("#filterSeg button").forEach(b=>b.onclick=()=>{if(!ED.bmp)return;ED.p.filter=b.dataset.f;ED.dirty=true;preview()});
+$("edRot").onclick=()=>{if(!ED.bmp)return;ED.p.rot=(ED.p.rot+90)%360;ED.dirty=true;preview()};
+$("edAuto").onclick=()=>{if(!ED.bmp)return;const c=mk(ED.bmp.width,ED.bmp.height);ctx(c).drawImage(ED.bmp,0,0);const r=detectCorners(c);
+  if(r){ED.p.corners=r;ED.dirty=true;ED.view="crop";syncEditor()}
+  else{$("edLoad").hidden=false;$("edLoadTxt").textContent="Couldn't find the page edges. Drag the corners by hand.";$("edLoad").querySelector(".spin").hidden=true;
+    setTimeout(()=>{$("edLoad").hidden=true;$("edLoad").querySelector(".spin").hidden=false},1800)}};
+$("edFull").onclick=()=>{if(!ED.bmp)return;ED.p.corners=full(ED.bmp.width,ED.bmp.height);ED.dirty=true;ED.view="crop";syncEditor()};
 $("edDel").onclick=()=>{
   const b=$("edDel");if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Tap again to delete";setTimeout(()=>{b.dataset.armed="";b.textContent="Delete"},3000);return}
-  b.dataset.armed="";b.textContent="Delete";S.pages.splice(S.pages.indexOf(ED.p),1);closeEditor(true)};
-$("edDone").onclick=()=>closeEditor();
-async function closeEditor(skip){
-  if(!skip&&ED.dirty)await render(ED.p,ED.bmp);
-  ED.bmp&&ED.bmp.close&&ED.bmp.close();ED.bmp=null;ED.p=null;$("editor").hidden=true;document.body.style.overflow="";drawPages();
+  b.dataset.armed="";b.textContent="Delete";
+  const p=ED.p,idx=(ED.list||[]).indexOf(p);S.pages.splice(S.pages.indexOf(p),1);p.src=null;camThumb();
+  if(ED.ctx==="single"){ED.p=null;return backToCamera()}
+  if(ED.ctx==="review")return advance(1,idx);
+  ED.p=null;closeEditor();
+};
+function leavePage(){const p=ED.p;if(p&&S.pages.includes(p)&&(ED.dirty||p.state!=="done")){ED.p=null;queueRender(p)}else ED.p=null}
+function backToCamera(){leavePage();ED.token++;$("editor").hidden=true;
+  if(!$("cam").hidden&&!CAM.stream)openCamera(true);
+  if($("cam").hidden)document.body.style.overflow="";drawPages()}
+/* Move through a review batch. removedIdx: index in the batch of a page that was just deleted. */
+function advance(dir,removedIdx){
+  const cur=ED.p,list=ED.list||[],live=x=>S.pages.includes(x);
+  const i=removedIdx!=null?removedIdx:list.indexOf(cur);
+  if(removedIdx==null)leavePage();else ED.p=null;
+  let target=null;
+  if(dir>0){for(let j=i+1;j<list.length;j++)if(live(list[j])){target=list[j];break}}
+  if(!target&&(dir<0||removedIdx!=null)){for(let j=i-1;j>=0;j--)if(live(list[j])){target=list[j];break}}
+  if(!target)return closeEditor();
+  showPage(target);
 }
+async function closeEditor(){
+  leavePage();ED.token++;
+  if(ED.bmp&&ED.bmp.close)ED.bmp.close();ED.bmp=null;
+  $("editor").hidden=true;
+  if(ED.fromCam)closeCamera();
+  document.body.style.overflow="";drawPages();
+}
+$("edNext").onclick=()=>{
+  if(ED.ctx==="single")return backToCamera();
+  if(ED.ctx==="review"){const pos=listPos();if(pos&&pos[0]<pos[1])return advance(1);return closeEditor()}
+  closeEditor();
+};
+$("edBack").onclick=()=>{
+  if(ED.ctx==="single"){const p=ED.p;S.pages.splice(S.pages.indexOf(p),1);p.src=null;ED.p=null;camThumb();return backToCamera()}
+  if(ED.ctx==="review")return advance(-1);
+  closeEditor();
+};
+$("edAlt").onclick=()=>closeEditor();
 
 /* ---------- text ---------- */
 async function runOcr(onProgress){
@@ -570,6 +805,7 @@ async function runOcr(onProgress){
 function drawTx(){
   const done=S.pages.map((p,i)=>({p,i})).filter(o=>["done","fail","stale"].includes(o.p.tx));
   const a=$("txArea");if(!done.length){a.innerHTML="";return}
+  if(a.contains(document.activeElement))return;
   const open=a.querySelector("details")?.open;
   a.innerHTML=`<details${open?" open":""}><summary>Review text (${done.length} page${done.length===1?"":"s"})</summary><div class="tx">${done.map(({p,i})=>
     `<label for="tx${p.id}">Page ${i+1}${p.tx==="fail"?` · <span style="color:var(--err)">${esc(p.err||"")}</span>`:p.tx==="stale"?` · <span style="color:var(--warn)">image changed, will re-read on save</span>`:""}
@@ -602,7 +838,7 @@ function transcript(meta,n){
 }
 
 /* ---------- save ---------- */
-const STEP_NAMES={auth:"Sign in to Google",tx:"Read text (Google OCR)",pdf:"Build PDF",folders:"Find or create Drive folders",up:"Upload scan",txt:"Upload text file"};
+const STEP_NAMES={auth:"Sign in to Google",wait:"Finish processing pages",tx:"Read text (Google OCR)",pdf:"Build PDF",folders:"Find or create Drive folders",up:"Upload scan",txt:"Upload text file"};
 function steps(list){$("steps").innerHTML=list.map(k=>`<li id="st-${k}">${STEP_NAMES[k]}</li>`).join("")}
 function step(k,s,extra){const li=$("st-"+k);if(!li)return;li.className=s;if(extra!=null)li.textContent=STEP_NAMES[k]+extra}
 function showMsg(t,cls){$("saveCard").hidden=false;$("saveMsg").innerHTML=`<div class="msg ${cls}">${t}</div>`}
@@ -611,12 +847,17 @@ $("saveBtn").onclick=async()=>{
   if(S.busy||!S.pages.length)return;
   S.busy=true;drawPages();$("saveCard").hidden=false;$("saveMsg").innerHTML="";
   const doTx=$("doTx").checked&&!isPhoto();
-  const list=["auth",...(doTx?["tx"]:[]),...(isPhoto()?[]:["pdf"]),"folders","up","txt"];
+  const list=["auth","wait",...(doTx?["tx"]:[]),...(isPhoto()?[]:["pdf"]),"folders","up","txt"];
   steps(list);
   let stage="auth";
   try{
     step("auth","run");await getToken();step("auth","done");
     $("saveCard").scrollIntoView({behavior:"smooth",block:"start"});
+    stage="wait";step("wait","run");
+    S.pages.forEach(p=>{if(p.state!=="done")p.ready.then(ok=>ok&&queueRender(p))});
+    await drain();await drain();
+    if(S.pages.some(p=>p.state!=="done"))throw {code:"proc"};
+    step("wait","done");
     if(doTx){stage="tx";step("tx","run");const f=await runOcr((i,n)=>step("tx","run",` (${i}/${n})`));step("tx",f?"fail":"done",f?` (${f} page${f===1?"":"s"} skipped)`:"")}
     const name=baseName(),site=clean($("site").value)||"Unsorted",type=$("dtype").value;
     const meta={title:name,subject:`${type}, ${site}`,file:isPhoto()?`${name} - 01.jpg …`:`${name}.pdf`};
@@ -641,7 +882,8 @@ $("saveBtn").onclick=async()=>{
   }catch(e){
     step(stage,"fail");
     let t;
-    if(stage==="up"||stage==="txt")t=driveMsg(e)+" Part of the record may already be in Drive. Check the folder before saving again.";
+    if(e?.code==="proc")t="Some pages didn't finish processing. Open each page marked Finishing, tap Done, then save again.";
+    else if(stage==="up"||stage==="txt")t=driveMsg(e)+" Part of the record may already be in Drive. Check the folder before saving again.";
     else if(stage==="pdf")t="Building the PDF failed. Try removing the last page you added, then save again.";
     else t=driveMsg(e)+" Nothing was uploaded. Save again when ready.";
     showMsg(esc(t),"err");
@@ -661,7 +903,8 @@ function drawRecent(){
 }
 $("clearRecent").onclick=()=>{store.set("recent",[]);drawRecent()};
 window.addEventListener("beforeunload",e=>{if(S.pages.length&&!S.saved){e.preventDefault();e.returnValue=""}});
-drawRecent();drawPages();
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&CAM.stream&&!$("cam").hidden)stopStream();else if(!document.hidden&&!$("cam").hidden&&!CAM.stream&&$("editor").hidden)openCamera(true)});
+setMode(CAM.mode);drawRecent();drawPages();
 })();
 </script>
 </body>
