@@ -13,6 +13,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET") return;
+  if (url.pathname.includes("/lucy/")) return; // skull viewer is a separate page, keep it out of the scanner cache
   if (url.hostname.endsWith("googleapis.com") || url.hostname.endsWith("google.com")) return;
   // Network first for the page itself (so updates show up), cache first for everything else.
   if (e.request.mode === "navigate") {
