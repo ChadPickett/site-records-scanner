@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLC001 - Stone Tool</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #14130f; color: #ece6d8; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+  #stage { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 40%, #3a362b 0%, #1d1b15 60%, #14130f 100%); }
+  #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+  header { position: fixed; top: 0; left: 0; right: 0; padding: 16px 18px 28px; pointer-events: none;
+    background: linear-gradient(#14130fcc, #14130f00); }
+  header h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: .01em; }
+  header p { margin: 3px 0 0; font-size: 13px; opacity: .7; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; padding: 14px 14px max(14px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: 10px;
+    background: linear-gradient(#14130f00, #14130fd9); pointer-events: none; }
+  .hint { font-size: 12.5px; opacity: .65; text-align: center; transition: opacity .6s; }
+  .btns { display: flex; gap: 8px; pointer-events: auto; flex-wrap: wrap; justify-content: center; }
+  button { font: inherit; font-size: 14px; color: #ece6d8; background: #ffffff14; border: 1px solid #ffffff2e; border-radius: 999px; padding: 9px 16px; cursor: pointer; }
+  button:hover { background: #ffffff24; }
+  button[aria-pressed="true"] { background: #d9c9a3; color: #1d1b15; border-color: #d9c9a3; }
+  #load { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(260px, 70vw); text-align: center; font-size: 13px; opacity: .85; pointer-events: none; transition: opacity .4s; }
+  #load .track { height: 4px; border-radius: 4px; background: #ffffff22; margin-top: 10px; overflow: hidden; }
+  #load .fill { height: 100%; width: 0%; background: #d9c9a3; transition: width .15s; }
+  #err { display: none; position: fixed; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 30px; font-size: 15px; }
+</style>
+</head>
+<body data-model="model.json" data-az="0" data-pol="25">
+<div id="stage"></div>
+
+<header>
+  <h1>PLC001</h1>
+  <p>Stone tool &middot; 3D scan</p>
+</header>
+
+<div id="load"><span id="pct">Loading 3D scan...</span><div class="track"><div class="fill" id="fill"></div></div></div>
+<div id="err">The 3D viewer could not load on this device. Try a recent version of Safari, Chrome, or Firefox.</div>
+
+<div class="bar">
+  <div class="hint" id="hint">Drag to rotate &middot; pinch or scroll to zoom &middot; two fingers to move</div>
+  <div class="btns">
+    <button id="spin" aria-pressed="true">Auto-rotate</button>
+    <button id="reset">Reset view</button>
+    <button id="light" aria-pressed="false">Bright light</button>
+  </div>
+</div>
+
+<script src="viewer.js"></script>
+</body>
+</html>
